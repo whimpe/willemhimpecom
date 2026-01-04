@@ -59,27 +59,50 @@ const parseRSSFeed = async (): Promise<Episode[]> => {
     const xml = parser.parseFromString(text, 'text/xml');
     const items = xml.querySelectorAll('item');
     
-    const episodes: Episode[] = [];
+    console.log(`Fetched ${items.length} episodes from RSS feed`);
+    
+    // Parse ALL episodes with their publication dates
+    const allEpisodes: { episode: Episode; pubDate: Date }[] = [];
+    
     items.forEach((item, index) => {
-      if (index >= 5) return; // Only get first 5 (newest)
-      
       const title = item.querySelector('title')?.textContent?.replace(/^E\d+:\s*/, '') || '';
       const link = item.querySelector('link')?.textContent || spotifyUrl;
-      const duration = item.querySelector('duration')?.textContent || '';
-      const image = item.querySelector('image')?.getAttribute('href') || 
+      
+      // Get duration from itunes:duration
+      const durationEl = item.getElementsByTagName('itunes:duration')[0];
+      const duration = durationEl?.textContent || '';
+      
+      // Get image from itunes:image
+      const imageEl = item.getElementsByTagName('itunes:image')[0];
+      const image = imageEl?.getAttribute('href') || 
                    'https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_nologo/35553904/35553904-1678543723582-1c9dd0801abf9.jpg';
       
-      episodes.push({
-        id: String(index),
-        title,
-        guest: "Louis Debaere & Willem Himpe",
-        duration,
-        image,
-        link
+      // Get publication date for sorting
+      const pubDateStr = item.querySelector('pubDate')?.textContent || '';
+      const pubDate = new Date(pubDateStr);
+      
+      allEpisodes.push({
+        episode: {
+          id: String(index),
+          title,
+          guest: "Louis Debaere & Willem Himpe",
+          duration,
+          image,
+          link
+        },
+        pubDate
       });
     });
     
-    return episodes.length > 0 ? episodes : fallbackEpisodes;
+    // Sort ALL episodes by publication/upload date (newest first)
+    allEpisodes.sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime());
+    
+    // Take the 5 most recently uploaded episodes
+    const latestFiveEpisodes = allEpisodes.slice(0, 5).map(e => e.episode);
+    
+    console.log('Latest 5 episodes by upload date:', latestFiveEpisodes.map(e => e.title));
+    
+    return latestFiveEpisodes.length > 0 ? latestFiveEpisodes : fallbackEpisodes;
   } catch (error) {
     console.error('Failed to fetch RSS feed:', error);
     return fallbackEpisodes;
@@ -110,7 +133,12 @@ export const Podcast: React.FC = () => {
   };
 
   const EpisodeCard = ({ ep, i }: { ep: Episode; i: number }) => (
-    <div className="group bg-white/5 border border-white/10 rounded-[2rem] overflow-hidden hover:border-white/20 transition-all duration-500">
+    <a 
+      href={ep.link} 
+      target="_blank" 
+      rel="noopener noreferrer"
+      className="block group bg-white/5 border border-white/10 rounded-[2rem] overflow-hidden hover:border-white/20 transition-all duration-500 cursor-pointer"
+    >
       <div className="relative aspect-square overflow-hidden">
         <img 
           src={ep.image} 
@@ -118,13 +146,9 @@ export const Podcast: React.FC = () => {
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
         />
         <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <a 
-            href={ep.link} 
-            target="_blank" 
-            className="bg-white text-black p-4 rounded-full transform scale-75 group-hover:scale-100 transition-transform duration-300"
-          >
+          <div className="bg-white text-black p-4 rounded-full transform scale-75 group-hover:scale-100 transition-transform duration-300">
             <PlayCircle size={32} />
-          </a>
+          </div>
         </div>
       </div>
       <div className="p-6 space-y-4">
@@ -143,10 +167,10 @@ export const Podcast: React.FC = () => {
         </h3>
         <div className="pt-4 border-t border-white/5 flex items-center justify-between">
           <span className="text-xs text-gray-500">{i === 0 ? 'Newest Episode' : `Episode ${episodes.length - i}`}</span>
-          <a href={ep.link} target="_blank" className="text-xs text-white font-medium hover:text-[#1DB954] transition-colors">Full Details</a>
+          <span className="text-xs text-white font-medium group-hover:text-[#1DB954] transition-colors">Listen Now →</span>
         </div>
       </div>
-    </div>
+    </a>
   );
 
   return (
