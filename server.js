@@ -65,8 +65,11 @@ app.get('/api/podcast-feed', async (req, res) => {
   }
 });
 
-// SPA fallback - serve index.html for all other routes
+// SPA fallback - serve index.html for all other routes (with no-cache headers)
 app.get('*', (req, res) => {
+  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigation } from './components/Navigation';
 import { Hero } from './components/Hero';
 import { About } from './components/About';
@@ -8,6 +8,9 @@ import { Podcast } from './components/Podcast';
 import { Contact } from './components/Contact';
 import { WillemChat } from './components/WillemChat';
 import { AgentPage } from './components/AgentPage';
+
+// Log build ID on app load
+console.log("BUILD:", (import.meta as any).env?.VITE_BUILD_ID || "dev");
 
 function App() {
   const [currentPage, setCurrentPage] = useState<'home' | 'agent'>('home');
