@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Reveal } from './ui/Reveal';
-import { Calendar, Briefcase, Award, Linkedin, Instagram, Mail, Youtube } from 'lucide-react';
+import { Calendar, Briefcase, Award } from 'lucide-react';
 
 const TikTokIcon = ({ size = 14 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
@@ -58,42 +58,6 @@ export const About: React.FC = () => {
               </div>
             </Reveal>
 
-            {/* Social Badges */}
-            <Reveal delay={0.5} width="100%">
-              <div className="flex flex-wrap gap-2 md:gap-3 mt-8">
-                <SocialBadge 
-                  href="https://linkedin.com/in/willem-himpe" 
-                  label="@willemhimpe" 
-                  icon={<Linkedin size={14} />} 
-                />
-                <SocialBadge 
-                  href="https://instagram.com/willem_himpe" 
-                  label="@willem_himpe" 
-                  icon={<Instagram size={14} />} 
-                />
-                <SocialBadge 
-                  href="https://youtube.com/@willemhimpe" 
-                  label="@willemhimpe" 
-                  icon={<Youtube size={14} />} 
-                />
-                <SocialBadge 
-                  href="https://tiktok.com/@willemhimpe" 
-                  label="@willemhimpe" 
-                  icon={<TikTokIcon size={14} />} 
-                />
-                <SocialBadge 
-                  href="https://x.com/willem_himpe" 
-                  label="@willem_himpe" 
-                  icon={<svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-current"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>} 
-                />
-                <SocialBadge 
-                  href="mailto:willem@relivo.io" 
-                  label="Email" 
-                  icon={<Mail size={14} />} 
-                />
-              </div>
-            </Reveal>
-
             {/* Timeline */}
             <div className="mt-12 space-y-6">
               {milestones.map((item, index) => (
@@ -119,15 +83,12 @@ export const About: React.FC = () => {
           {/* Image */}
           <div className="order-1 md:order-2 relative">
             <Reveal direction="right" width="100%">
-              <div className="relative aspect-square md:aspect-[4/5] overflow-hidden rounded-[32px] border border-white/10 shadow-2xl">
+              <div className="relative aspect-square md:aspect-[4/5] overflow-hidden rounded-[32px] border border-white/10 shadow-2xl group">
                 <div className="absolute inset-0 bg-gradient-to-tr from-black/60 to-transparent z-10" />
                 <img 
-                  src="https://raw.githubusercontent.com/WillemHimpe/assets/main/willem_portrait.jpg" 
+                  src="/profile.jpeg" 
                   alt="Willem Himpe Portrait" 
-                  onError={(e) => {
-                    e.currentTarget.src = "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2187&auto=format&fit=crop";
-                  }}
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale"
+                  className="w-full h-full object-cover transition-all duration-700 grayscale group-hover:grayscale-0 group-hover:scale-105"
                 />
                 
                 <div className="absolute bottom-8 left-8 z-20 bg-black/40 backdrop-blur-xl border border-white/20 p-4 rounded-2xl max-w-xs">
