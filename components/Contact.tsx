@@ -1,13 +1,7 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Reveal } from './ui/Reveal';
-import { ArrowUpRight, Mail, Linkedin, Instagram, Youtube, Send, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
-import emailjs from '@emailjs/browser';
-
-const projects = [
-  { id: 1, title: 'TechSummit Keynote', cat: 'Speaking', img: 'https://images.unsplash.com/photo-1475721027185-40faec164b2a?q=80&w=2070&auto=format&fit=crop' },
-  { id: 2, title: 'Startup Advisory', cat: 'Consulting', img: 'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop' },
-];
+import { Mail, Linkedin, Instagram, Youtube, Send, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 
 const TikTokIcon = ({ size = 20 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
@@ -16,7 +10,6 @@ const TikTokIcon = ({ size = 20 }: { size?: number }) => (
 );
 
 export const Contact: React.FC = () => {
-  const formRef = useRef<HTMLFormElement>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -29,35 +22,23 @@ export const Contact: React.FC = () => {
     e.preventDefault();
     setStatus('sending');
 
-    // NOTE: You must provide your own EmailJS keys here for this to work automatically.
-    // Replace placeholders with real keys from https://dashboard.emailjs.com/
-    const SERVICE_ID = 'service_placeholder'; 
-    const TEMPLATE_ID = 'template_placeholder';
-    const PUBLIC_KEY = 'public_key_placeholder';
-
-    if (SERVICE_ID === 'service_placeholder') {
-      // Fallback behavior if keys aren't set: Use mailto to ensure delivery
-      console.warn("EmailJS keys not configured. Falling back to mailto.");
-      const mailtoUrl = `mailto:willem@relivo.io?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`;
-      window.location.href = mailtoUrl;
-      setStatus('success');
-      setTimeout(() => setStatus('idle'), 5000);
-      return;
-    }
-
     try {
-      await emailjs.send(
-        SERVICE_ID,
-        TEMPLATE_ID,
-        {
-          from_name: formData.name,
-          reply_to: formData.email,
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
           subject: formData.subject,
           message: formData.message,
-          to_email: 'willem@relivo.io'
-        },
-        PUBLIC_KEY
-      );
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send email');
+      }
       
       setStatus('success');
       setFormData({ name: '', email: '', subject: 'Collaboration Inquiry', message: '' });
@@ -71,31 +52,6 @@ export const Contact: React.FC = () => {
 
   return (
     <>
-      {/* Projects Section */}
-      <section id="projects" className="py-24 bg-apple-dark scroll-mt-32">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-           <Reveal width="100%" className="mb-12">
-              <h2 className="text-3xl font-bold text-white">Selected Works</h2>
-           </Reveal>
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {projects.map((p, i) => (
-                 <Reveal key={p.id} width="100%" delay={i * 0.1}>
-                    <div className="group relative rounded-3xl overflow-hidden aspect-video bg-gray-800">
-                       <img src={p.img} alt={p.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-40 group-hover:opacity-60" />
-                       <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 to-transparent">
-                          <p className="text-sm text-gray-400 mb-1">{p.cat}</p>
-                          <div className="flex items-center justify-between">
-                             <h3 className="text-2xl font-bold text-white">{p.title}</h3>
-                             <ArrowUpRight className="text-white opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0" />
-                          </div>
-                       </div>
-                    </div>
-                 </Reveal>
-              ))}
-           </div>
-        </div>
-      </section>
-
       {/* Contact Section */}
       <section id="contact" className="py-32 bg-black relative scroll-mt-32">
         <div className="max-w-5xl mx-auto px-6">
@@ -136,7 +92,7 @@ export const Contact: React.FC = () => {
                     </div>
                  )}
 
-                 <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+                 <form onSubmit={handleSubmit} className="space-y-6">
                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                      <div className="space-y-2">
                        <label className="text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">Name</label>

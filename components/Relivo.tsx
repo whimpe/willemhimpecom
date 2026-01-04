@@ -29,7 +29,7 @@ export const Relivo: React.FC = () => {
   return (
     <section id="relivo" className="py-32 bg-apple-dark relative overflow-hidden scroll-mt-32">
       {/* Ambient background glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#f23472]/10 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         
@@ -43,7 +43,7 @@ export const Relivo: React.FC = () => {
           <Reveal width="100%" direction="up" delay={0.1}>
             <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-6">
               Event photography,<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">reimagined with AI.</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#fe623d] to-[#f23472]">reimagined with AI.</span>
             </h2>
           </Reveal>
           <Reveal width="100%" direction="up" delay={0.2}>
@@ -59,7 +59,7 @@ export const Relivo: React.FC = () => {
            <div className="lg:col-span-7 relative group">
               <Reveal width="100%" className="h-full">
                 <div className="relative h-full min-h-[500px] bg-gray-900 rounded-[3rem] border border-white/10 overflow-hidden shadow-2xl flex items-center justify-center p-8 lg:p-12">
-                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent opacity-50" />
+                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-[#fe623d]/10 via-transparent to-transparent opacity-50" />
                    
                    {/* Abstract Phone UI Representation */}
                    <div className="relative w-64 h-[500px] bg-black border-4 border-gray-800 rounded-[2.5rem] shadow-2xl overflow-hidden transform transition-transform duration-700 group-hover:scale-105">
@@ -75,7 +75,7 @@ export const Relivo: React.FC = () => {
                            ))}
                         </div>
                         {/* Floating Action */}
-                        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-6 py-3 bg-blue-600 rounded-full shadow-lg shadow-blue-600/20">
+                        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-6 py-3 bg-gradient-to-r from-[#fe623d] to-[#f23472] rounded-full shadow-lg shadow-[#f23472]/20">
                            <div className="w-20 h-2 bg-white/80 rounded-full" />
                         </div>
                       </div>
@@ -89,7 +89,7 @@ export const Relivo: React.FC = () => {
               {features.map((feature, i) => (
                 <Reveal key={i} delay={0.2 + (i * 0.1)} width="100%">
                   <div className="p-6 bg-white/5 hover:bg-white/10 border border-white/10 backdrop-blur-md rounded-3xl transition-colors duration-300">
-                    <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 mb-4">
+                    <div className="w-10 h-10 rounded-full bg-[#fe623d]/20 flex items-center justify-center text-[#fe623d] mb-4">
                       {feature.icon}
                     </div>
                     <h3 className="text-white font-semibold text-lg mb-2">{feature.title}</h3>
@@ -103,7 +103,7 @@ export const Relivo: React.FC = () => {
         {/* CTA */}
         <div className="text-center">
            <Reveal width="100%" direction="up">
-              <a href="https://relivo.io" className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 font-medium transition-colors">
+              <a href="https://relivo.io" className="inline-flex items-center gap-2 text-[#fe623d] hover:text-[#f23472] font-medium transition-colors">
                 Explore the Platform <span className="text-xl">→</span>
               </a>
            </Reveal>

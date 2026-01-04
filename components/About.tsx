@@ -1,12 +1,11 @@
 
 import React from 'react';
 import { Reveal } from './ui/Reveal';
-import { Calendar, Briefcase, Award } from 'lucide-react';
+import { Briefcase, Mic } from 'lucide-react';
 
 const milestones = [
-  { year: '2023', title: 'Founded Relivo', desc: 'Revolutionizing event photography with AI.', icon: <Briefcase size={16} /> },
-  { year: '2022', title: 'Unquestioned Podcast', desc: 'Started conversations with industry leaders.', icon: <Award size={16} /> },
-  { year: '2020', title: 'Content Creation', desc: 'began building personal brand & audience.', icon: <Calendar size={16} /> },
+  { year: '2021', title: 'Founded Relivo', desc: 'Revolutionizing event photography with AI.', icon: <Briefcase size={16} /> },
+  { year: '2022', title: 'Unquestioned Podcast', desc: 'Started conversations with industry leaders.', icon: <Mic size={16} /> },
 ];
 
 export const About: React.FC = () => {
@@ -29,13 +28,10 @@ export const About: React.FC = () => {
             <Reveal delay={0.4}>
               <div className="space-y-6 text-gray-400 leading-relaxed font-light text-lg">
                 <p>
-                  I believe in the power of technology to enhance human connection, not replace it. 
-                  My journey started with a simple question: "How can we make experiences last longer?"
+                  I believe real progress happens when humans and technology operate as one. My focus: using AI to remove friction and help companies move toward full autonomy.
                 </p>
                 <p>
-                  This curiosity led me to build <strong className="text-white">Relivo</strong>, 
-                  where we use AI to instantly deliver event photos to attendees. 
-                  Simultaneously, I explore the minds of other creators on the <strong className="text-white">Unquestioned Podcast</strong>.
+                  At <strong className="text-white">Relivo</strong>, we use AI to instantly deliver event photos. On the <strong className="text-white">Unquestioned Podcast</strong>, Louis Debaere and I explore what it takes to become the next generation of innovators.
                 </p>
               </div>
             </Reveal>
