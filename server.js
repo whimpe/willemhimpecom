@@ -75,5 +75,15 @@ app.get('*', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  console.log(`Serving static files from: ${path.join(__dirname, 'dist')}`);
+  // Log dist contents on startup for debugging
+  import('fs').then(fs => {
+    try {
+      const files = fs.readdirSync(path.join(__dirname, 'dist'));
+      console.log('Dist folder contents:', files);
+    } catch (e) {
+      console.error('Could not read dist folder:', e.message);
+    }
+  });
 });
 
