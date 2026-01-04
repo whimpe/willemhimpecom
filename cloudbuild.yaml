@@ -30,6 +30,14 @@ steps:
 images:
   - ${_AR_HOSTNAME}/${_AR_PROJECT_ID}/${_AR_REPOSITORY}/${_SERVICE_NAME}:${SHORT_SHA}
 
+substitutions:
+  _AR_HOSTNAME: us-west1-docker.pkg.dev
+  _AR_PROJECT_ID: gen-lang-client-0873605374
+  _AR_REPOSITORY: cloud-run-source-deploy
+  _SERVICE_NAME: willem-himpe-personal-brand
+  _DEPLOY_REGION: us-west1
+  _PLATFORM: managed
+
 options:
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
 
