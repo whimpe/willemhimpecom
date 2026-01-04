@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   X, ChevronLeft, ArrowUp,
-  MessageSquare, HelpCircle, Sparkles
+  MessageSquare, HelpCircle, MessageCircle
 } from 'lucide-react';
 import { GoogleGenAI } from "@google/genai";
 import ReactMarkdown from 'react-markdown';
@@ -206,7 +206,7 @@ export const WillemChat: React.FC<WillemChatProps> = ({ isVisible = true }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="w-14 h-14 md:w-16 md:h-16 bg-black text-white border border-white/20 rounded-full shadow-[0_0_25px_rgba(255,255,255,0.1)] flex items-center justify-center z-[70]"
       >
-        {isOpen ? <X size={28} /> : <Sparkles size={28} className="text-white/90" />}
+        {isOpen ? <X size={28} /> : <MessageCircle size={28} className="text-white/90" />}
       </motion.button>
     </div>
   );

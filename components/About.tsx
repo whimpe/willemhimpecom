@@ -68,10 +68,6 @@ export const About: React.FC = () => {
                   alt="Willem Himpe Portrait" 
                   className="w-full h-full object-cover transition-all duration-700 grayscale group-hover:grayscale-0 group-hover:scale-105"
                 />
-                
-                <div className="absolute bottom-8 left-8 z-20 bg-black/40 backdrop-blur-xl border border-white/20 p-4 rounded-2xl max-w-xs">
-                  <p className="text-white font-medium text-sm">"Building for the future."</p>
-                </div>
               </div>
             </Reveal>
           </div>

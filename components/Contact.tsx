@@ -72,7 +72,7 @@ export const Contact: React.FC = () => {
                       <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white">
                         <Mail size={20} />
                       </div>
-                      <span className="text-lg">willem@relivo.io</span>
+                      <a href="mailto:willem@relivo.io" className="text-lg hover:text-white transition-colors">willem@relivo.io</a>
                     </div>
                   </div>
                </Reveal>

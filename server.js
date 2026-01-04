@@ -52,6 +52,19 @@ app.post('/api/send-email', async (req, res) => {
   }
 });
 
+// API endpoint for fetching podcast RSS feed
+app.get('/api/podcast-feed', async (req, res) => {
+  try {
+    const response = await fetch('https://anchor.fm/s/d4838a40/podcast/rss');
+    const text = await response.text();
+    res.set('Content-Type', 'application/xml');
+    res.send(text);
+  } catch (error) {
+    console.error('Failed to fetch RSS feed:', error);
+    res.status(500).json({ error: 'Failed to fetch podcast feed' });
+  }
+});
+
 // SPA fallback - serve index.html for all other routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));

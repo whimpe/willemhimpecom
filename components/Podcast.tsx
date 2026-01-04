@@ -1,65 +1,103 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Reveal } from './ui/Reveal';
 import { Mic, PlayCircle, ExternalLink, Clock, User, ChevronLeft, ChevronRight, Grid, Rows } from 'lucide-react';
 import { Episode } from '../types';
 
 const spotifyUrl = "https://open.spotify.com/show/2YRpgs8Y98hzXCrldER2ep";
+const RSS_FEED_URL = "/api/podcast-feed";
 
-const episodes: Episode[] = [
+// Fallback episodes in case RSS fetch fails
+const fallbackEpisodes: Episode[] = [
   {
-    id: '1',
-    title: "AI & The Future of Event Experience",
-    guest: "Willem Himpe Solo",
-    duration: "42:15",
-    image: "https://images.unsplash.com/photo-1478737270239-2fccd27ee8fb?q=80&w=2070&auto=format&fit=crop",
-    link: spotifyUrl
-  },
-  {
-    id: '2',
-    title: "Scaling Creativity in a Tech World",
-    guest: "Sarah Jenkins",
-    duration: "35:40",
-    image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=2074&auto=format&fit=crop",
-    link: spotifyUrl
+    id: '40',
+    title: "The Courage to be Disliked",
+    guest: "Louis Debaere & Willem Himpe",
+    duration: "29:42",
+    image: "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_episode/35553904/35553904-1732379533979-fc0b8e1bd63b4.jpg",
+    link: "https://podcasters.spotify.com/pod/show/unquestioned/episodes/E40-THE-COURAGE-TO-BE-DISLIKED-e3bbuar"
   },
   {
     id: '3',
-    title: "The Personal Branding Playbook",
-    guest: "David Arquette",
-    duration: "51:20",
-    image: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?q=80&w=2070&auto=format&fit=crop",
-    link: spotifyUrl
+    title: "Relivo Business Awards 2022",
+    guest: "Louis Debaere & Willem Himpe",
+    duration: "14:06",
+    image: "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_episode/35553904/35553904-1672620183536-ba72214f4b125.jpg",
+    link: "https://podcasters.spotify.com/pod/show/unquestioned/episodes/E3-Relivo-Business-Awards-2022-e1t9djh"
   },
   {
-    id: '4',
-    title: "Building in Public: Lessons Learned",
-    guest: "Emma Richardson",
-    duration: "47:30",
-    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop",
-    link: spotifyUrl
+    id: '2',
+    title: "How Technology Can Become Invisible",
+    guest: "Louis Debaere & Willem Himpe",
+    duration: "11:48",
+    image: "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_episode/35553904/35553904-1672009503267-76fe4a808fb03.jpg",
+    link: "https://podcasters.spotify.com/pod/show/unquestioned/episodes/E2-How-technology-can-become-invisible--focus-on-the-problem-and-deterministic-vs-probabilistic-models-e1sn96k"
   },
   {
-    id: '5',
-    title: "From Idea to MVP in 30 Days",
-    guest: "Marcus Chen",
-    duration: "38:45",
-    image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=2070&auto=format&fit=crop",
-    link: spotifyUrl
+    id: '1',
+    title: "The 5 Tweets of the Week",
+    guest: "Louis Debaere & Willem Himpe",
+    duration: "20:12",
+    image: "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_episode400/35553904/35553904-1671226273881-7c8bc228bd802.jpg",
+    link: "https://podcasters.spotify.com/pod/show/unquestioned/episodes/E1-The-5-Tweets-of-the-week-e1sc8co"
   },
   {
-    id: '6',
-    title: "The Psychology of Innovation",
-    guest: "Dr. Lisa Moore",
-    duration: "55:10",
-    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop",
-    link: spotifyUrl
+    id: '0',
+    title: "Introduction, Dogfood and GPT-3",
+    guest: "Louis Debaere & Willem Himpe",
+    duration: "11:21",
+    image: "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_episode400/35553904/35553904-1670553873767-1b94d33f8b6d2.jpg",
+    link: "https://podcasters.spotify.com/pod/show/unquestioned/episodes/E0-Introduction--Dogfood-and-Simpson-terms-and-GPT3-e1s047f"
   }
 ];
 
+const parseRSSFeed = async (): Promise<Episode[]> => {
+  try {
+    const response = await fetch(RSS_FEED_URL);
+    const text = await response.text();
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(text, 'text/xml');
+    const items = xml.querySelectorAll('item');
+    
+    const episodes: Episode[] = [];
+    items.forEach((item, index) => {
+      if (index >= 5) return; // Only get first 5 (newest)
+      
+      const title = item.querySelector('title')?.textContent?.replace(/^E\d+:\s*/, '') || '';
+      const link = item.querySelector('link')?.textContent || spotifyUrl;
+      const duration = item.querySelector('duration')?.textContent || '';
+      const image = item.querySelector('image')?.getAttribute('href') || 
+                   'https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_nologo/35553904/35553904-1678543723582-1c9dd0801abf9.jpg';
+      
+      episodes.push({
+        id: String(index),
+        title,
+        guest: "Louis Debaere & Willem Himpe",
+        duration,
+        image,
+        link
+      });
+    });
+    
+    return episodes.length > 0 ? episodes : fallbackEpisodes;
+  } catch (error) {
+    console.error('Failed to fetch RSS feed:', error);
+    return fallbackEpisodes;
+  }
+};
+
 export const Podcast: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [episodes, setEpisodes] = useState<Episode[]>(fallbackEpisodes);
+  const [isLoading, setIsLoading] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    parseRSSFeed().then((eps) => {
+      setEpisodes(eps);
+      setIsLoading(false);
+    });
+  }, []);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -73,7 +111,7 @@ export const Podcast: React.FC = () => {
 
   const EpisodeCard = ({ ep, i }: { ep: Episode; i: number }) => (
     <div className="group bg-white/5 border border-white/10 rounded-[2rem] overflow-hidden hover:border-white/20 transition-all duration-500">
-      <div className="relative aspect-video overflow-hidden">
+      <div className="relative aspect-square overflow-hidden">
         <img 
           src={ep.image} 
           alt={ep.title} 
@@ -92,20 +130,20 @@ export const Podcast: React.FC = () => {
       <div className="p-6 space-y-4">
         <div className="flex items-center justify-between text-[10px] font-mono text-gray-400 uppercase tracking-wider">
           <div className="flex items-center gap-1.5">
-            <Clock size={12} className="text-blue-400" />
+            <Clock size={12} className="text-white/60" />
             {ep.duration}
           </div>
           <div className="flex items-center gap-1.5">
-            <User size={12} className="text-blue-400" />
+            <User size={12} className="text-white/60" />
             {ep.guest}
           </div>
         </div>
-        <h3 className="text-lg font-semibold text-white group-hover:text-blue-400 transition-colors leading-snug">
+        <h3 className="text-lg font-semibold text-white group-hover:text-[#1DB954] transition-colors leading-snug">
           {ep.title}
         </h3>
         <div className="pt-4 border-t border-white/5 flex items-center justify-between">
           <span className="text-xs text-gray-500">{i === 0 ? 'Newest Episode' : `Episode ${episodes.length - i}`}</span>
-          <a href={ep.link} target="_blank" className="text-xs text-blue-400 font-medium hover:underline">Full Details</a>
+          <a href={ep.link} target="_blank" className="text-xs text-white font-medium hover:text-[#1DB954] transition-colors">Full Details</a>
         </div>
       </div>
     </div>
@@ -117,15 +155,15 @@ export const Podcast: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
           <div>
             <Reveal>
-              <div className="flex items-center gap-3 mb-4 text-blue-400">
+              <div className="flex items-center gap-3 mb-4 text-white">
                 <Mic size={20} />
                 <span className="uppercase tracking-widest text-xs font-bold">Unquestioned Podcast</span>
               </div>
             </Reveal>
             <Reveal delay={0.1}>
               <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
-                Deep dives into the<br />
-                <span className="text-gray-500 italic">intersection of tech & humanity.</span>
+                Sharing experiences from<br />
+                <span className="text-gray-500 italic">startups and big tech.</span>
               </h2>
             </Reveal>
           </div>
@@ -195,7 +233,7 @@ export const Podcast: React.FC = () => {
 
         <Reveal width="100%" className="mt-16 text-center">
           <p className="text-gray-500 text-sm italic">
-            Synchronized with the latest RSS feed. New episodes every Tuesday.
+            A podcast where a senior developer and a startup founder discuss tech trends and share experiences.
           </p>
         </Reveal>
       </div>
