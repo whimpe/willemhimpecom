@@ -1,9 +1,11 @@
+
 import React from 'react';
 import { Reveal } from './ui/Reveal';
 import { Mic, PlayCircle, ExternalLink, Clock, User } from 'lucide-react';
 import { Episode } from '../types';
 
-// Mocked real-world data structure for the podcast
+const spotifyUrl = "https://open.spotify.com/show/2YRpgs8Y98hzXCrldER2ep";
+
 const episodes: Episode[] = [
   {
     id: '1',
@@ -11,7 +13,7 @@ const episodes: Episode[] = [
     guest: "Willem Himpe Solo",
     duration: "42:15",
     image: "https://images.unsplash.com/photo-1478737270239-2fccd27ee8fb?q=80&w=2070&auto=format&fit=crop",
-    link: "https://open.spotify.com/show/unquestioned"
+    link: spotifyUrl
   },
   {
     id: '2',
@@ -19,7 +21,7 @@ const episodes: Episode[] = [
     guest: "Sarah Jenkins",
     duration: "35:40",
     image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=2074&auto=format&fit=crop",
-    link: "https://open.spotify.com/show/unquestioned"
+    link: spotifyUrl
   },
   {
     id: '3',
@@ -27,7 +29,7 @@ const episodes: Episode[] = [
     guest: "David Arquette",
     duration: "51:20",
     image: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?q=80&w=2070&auto=format&fit=crop",
-    link: "https://open.spotify.com/show/unquestioned"
+    link: spotifyUrl
   }
 ];
 
@@ -53,7 +55,7 @@ export const Podcast: React.FC = () => {
           <Reveal delay={0.2} direction="left">
             <div className="flex gap-4">
                <a 
-                href="https://open.spotify.com/show/unquestioned" 
+                href={spotifyUrl}
                 target="_blank" 
                 className="group flex items-center gap-2 px-6 py-3 rounded-full bg-[#1DB954] text-black font-semibold hover:bg-[#1ed760] transition-all transform hover:scale-105"
                >
