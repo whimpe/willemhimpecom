@@ -1,7 +1,7 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Reveal } from './ui/Reveal';
-import { Mail, Linkedin, Instagram, Youtube, Send, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
+import { Mail, Linkedin, Instagram, Youtube } from 'lucide-react';
 
 const TikTokIcon = ({ size = 20 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
@@ -10,170 +10,33 @@ const TikTokIcon = ({ size = 20 }: { size?: number }) => (
 );
 
 export const Contact: React.FC = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: 'Collaboration Inquiry',
-    message: ''
-  });
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('sending');
-
-    try {
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          subject: formData.subject,
-          message: formData.message,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to send email');
-      }
-      
-      setStatus('success');
-      setFormData({ name: '', email: '', subject: 'Collaboration Inquiry', message: '' });
-      setTimeout(() => setStatus('idle'), 5000);
-    } catch (error) {
-      console.error('Failed to send email:', error);
-      setStatus('error');
-      setTimeout(() => setStatus('idle'), 5000);
-    }
-  };
-
   return (
     <>
       {/* Contact Section */}
       <section id="contact" className="py-32 bg-black relative scroll-mt-32">
-        <div className="max-w-5xl mx-auto px-6">
-           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-             <div>
-               <Reveal width="100%" direction="up">
-                  <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tighter mb-8 leading-[0.9]">
-                     Let's build <br />
-                     <span className="text-gray-500 italic">the future.</span>
-                  </h2>
-               </Reveal>
-               <Reveal width="100%" direction="up" delay={0.2}>
-                  <p className="text-xl text-gray-400 mb-12 max-w-md font-light">
-                     Interested in Relivo, the podcast, or a collaborative project? Drop me a message and let's start a conversation.
-                  </p>
-                  <div className="space-y-6">
-                    <div className="flex items-center gap-4 text-gray-300">
-                      <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white">
-                        <Mail size={20} />
-                      </div>
-                      <a href="mailto:willem@relivo.io" className="text-lg hover:text-white transition-colors">willem@relivo.io</a>
-                    </div>
-                  </div>
-               </Reveal>
-             </div>
-
-             <Reveal width="100%" direction="up" delay={0.3}>
-               <div className="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 md:p-10 backdrop-blur-xl relative overflow-hidden">
-                 {/* Success Overlay */}
-                 {status === 'success' && (
-                    <div className="absolute inset-0 bg-black/80 backdrop-blur-md z-20 flex flex-col items-center justify-center text-center p-8 animate-in fade-in duration-500">
-                      <div className="w-20 h-20 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center text-green-400 mb-6">
-                        <CheckCircle2 size={40} />
-                      </div>
-                      <h3 className="text-2xl font-bold text-white mb-2">Message Received</h3>
-                      <p className="text-gray-400">I'll get back to you as soon as possible.</p>
-                      <button onClick={() => setStatus('idle')} className="mt-8 text-sm text-gray-500 hover:text-white transition-colors underline">Send another</button>
-                    </div>
-                 )}
-
-                 <form onSubmit={handleSubmit} className="space-y-6">
-                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                     <div className="space-y-2">
-                       <label className="text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">Name</label>
-                       <input 
-                         required
-                         type="text" 
-                         value={formData.name}
-                         onChange={(e) => setFormData({...formData, name: e.target.value})}
-                         placeholder="John Doe" 
-                         className="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-gray-600 focus:outline-none focus:border-white/30 focus:bg-white/10 transition-all"
-                       />
-                     </div>
-                     <div className="space-y-2">
-                       <label className="text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">Email</label>
-                       <input 
-                         required
-                         type="email" 
-                         value={formData.email}
-                         onChange={(e) => setFormData({...formData, email: e.target.value})}
-                         placeholder="john@example.com" 
-                         className="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-gray-600 focus:outline-none focus:border-white/30 focus:bg-white/10 transition-all"
-                       />
-                     </div>
-                   </div>
-                   <div className="space-y-2">
-                     <label className="text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">Subject</label>
-                     <select 
-                       value={formData.subject}
-                       onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                       className="w-full px-6 py-4 bg-[#111] border border-white/10 rounded-2xl text-white focus:outline-none focus:border-white/30 transition-all appearance-none cursor-pointer"
-                     >
-                       <option>Collaboration Inquiry</option>
-                       <option>Relivo Partnership</option>
-                       <option>Podcast Guest Inquiry</option>
-                       <option>Speaking Opportunity</option>
-                       <option>Other</option>
-                     </select>
-                   </div>
-                   <div className="space-y-2">
-                     <label className="text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">Message</label>
-                     <textarea 
-                       required
-                       rows={4}
-                       value={formData.message}
-                       onChange={(e) => setFormData({...formData, message: e.target.value})}
-                       placeholder="How can I help you?" 
-                       className="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-gray-600 focus:outline-none focus:border-white/30 focus:bg-white/10 transition-all resize-none"
-                     ></textarea>
-                   </div>
-                   
-                   <button 
-                     type="submit" 
-                     disabled={status === 'sending'}
-                     className={`w-full py-5 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed ${
-                       status === 'error' ? 'bg-red-600 text-white' : 'bg-white text-black hover:bg-gray-200'
-                     }`}
-                   >
-                     {status === 'sending' ? (
-                       <>
-                         <Loader2 size={18} className="animate-spin" />
-                         Encrypting & Sending...
-                       </>
-                     ) : status === 'error' ? (
-                       <>
-                         <AlertCircle size={18} />
-                         Failed to Send
-                       </>
-                     ) : (
-                       <>
-                         <Send size={18} />
-                         Send Message
-                       </>
-                     )}
-                   </button>
-                   <p className="text-[10px] text-gray-500 text-center uppercase tracking-wider">
-                     Direct API delivery to willem@relivo.io
-                   </p>
-                 </form>
-               </div>
-             </Reveal>
-           </div>
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <Reveal width="100%" direction="up">
+            <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tighter mb-8 leading-[0.9]">
+              Let's build <br />
+              <span className="text-gray-500 italic">the future.</span>
+            </h2>
+          </Reveal>
+          <Reveal width="100%" direction="up" delay={0.2}>
+            <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto font-light">
+              Interested in Relivo, the podcast, or a collaborative project? Drop me a message and let's start a conversation.
+            </p>
+          </Reveal>
+          <Reveal width="100%" direction="up" delay={0.3}>
+            <a 
+              href="mailto:willem@relivo.io" 
+              className="inline-flex items-center gap-4 px-8 py-5 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 hover:border-white/20 transition-all group"
+            >
+              <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-colors">
+                <Mail size={22} />
+              </div>
+              <span className="text-xl text-white font-medium">willem@relivo.io</span>
+            </a>
+          </Reveal>
         </div>
       </section>
 
