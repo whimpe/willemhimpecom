@@ -29,11 +29,8 @@ export const Contact: React.FC = () => {
           <Reveal width="100%" direction="up" delay={0.3}>
             <a 
               href="mailto:willem@relivo.io" 
-              className="inline-flex items-center gap-4 px-8 py-5 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 hover:border-white/20 transition-all group"
+              className="inline-flex items-center px-8 py-5 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 hover:border-white/20 transition-all"
             >
-              <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-colors">
-                <Mail size={22} />
-              </div>
               <span className="text-xl text-white font-medium">willem@relivo.io</span>
             </a>
           </Reveal>

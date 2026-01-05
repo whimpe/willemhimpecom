@@ -8,13 +8,10 @@ const navItems: NavItem[] = [
   { label: 'About', href: '#about' },
   { label: 'Relivo', href: '#relivo' },
   { label: 'Podcast', href: '#podcast' },
-  { label: 'Agent', href: '#agent' },
   { label: 'Contact', href: '#contact' },
 ];
 
-interface NavigationProps {
-  onNavigate?: (page: 'home' | 'agent') => void;
-}
+interface NavigationProps {}
 
 const TikTokIcon = ({ size = 18 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
@@ -22,7 +19,7 @@ const TikTokIcon = ({ size = 18 }: { size?: number }) => (
   </svg>
 );
 
-export const Navigation: React.FC<NavigationProps> = ({ onNavigate }) => {
+export const Navigation: React.FC<NavigationProps> = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -36,14 +33,9 @@ export const Navigation: React.FC<NavigationProps> = ({ onNavigate }) => {
 
   const handleNavClick = (href: string) => {
     setMobileMenuOpen(false);
-    if (href === '#agent') {
-      onNavigate?.('agent');
-    } else {
-      onNavigate?.('home');
-      if (href.startsWith('#') && href.length > 1) {
-        const el = document.querySelector(href);
-        el?.scrollIntoView({ behavior: 'smooth' });
-      }
+    if (href.startsWith('#') && href.length > 1) {
+      const el = document.querySelector(href);
+      el?.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
