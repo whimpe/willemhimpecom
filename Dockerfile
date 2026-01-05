@@ -16,7 +16,7 @@ COPY . .
 RUN npm run build
 
 # Verify build output exists
-RUN echo "=== Build output ===" && ls -la dist/ && echo "=== index.html preview ===" && head -20 dist/index.html
+RUN echo "=== Build output ===" && ls -la dist/ && ls -la dist/assets/ && echo "=== FULL index.html ===" && cat dist/index.html
 
 # Production stage
 FROM node:20-alpine
