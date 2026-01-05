@@ -61,24 +61,20 @@ export const Relivo: React.FC = () => {
                 <div className="relative h-full min-h-[500px] bg-gray-900 rounded-[3rem] border border-white/10 overflow-hidden shadow-2xl flex items-center justify-center p-8 lg:p-12">
                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-[#fe623d]/10 via-transparent to-transparent opacity-50" />
                    
-                   {/* Abstract Phone UI Representation */}
+                   {/* Phone with Demo Video */}
                    <div className="relative w-64 h-[500px] bg-black border-4 border-gray-800 rounded-[2.5rem] shadow-2xl overflow-hidden transform transition-transform duration-700 group-hover:scale-105">
-                      <div className="absolute top-0 w-full h-full bg-gray-900">
-                        {/* Header */}
-                        <div className="h-16 bg-black/50 backdrop-blur-md flex items-center justify-center border-b border-white/5">
-                           <div className="w-16 h-4 bg-gray-800 rounded-full" />
-                        </div>
-                        {/* Grid */}
-                        <div className="p-4 grid grid-cols-2 gap-2">
-                           {[1,2,3,4,5,6].map(i => (
-                             <div key={i} className="aspect-[3/4] bg-gray-800 rounded-lg animate-pulse" style={{ animationDelay: `${i * 100}ms` }} />
-                           ))}
-                        </div>
-                        {/* Floating Action */}
-                        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-6 py-3 bg-gradient-to-r from-[#fe623d] to-[#f23472] rounded-full shadow-lg shadow-[#f23472]/20">
-                           <div className="w-20 h-2 bg-white/80 rounded-full" />
-                        </div>
-                      </div>
+                      {/* Notch */}
+                      <div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-6 bg-black rounded-full z-10" />
+                      {/* Video */}
+                      <video 
+                        autoPlay 
+                        loop 
+                        muted 
+                        playsInline
+                        className="absolute inset-0 w-full h-full object-cover"
+                      >
+                        <source src="/Workshop - Relivo- 2025 copy.mp4" type="video/mp4" />
+                      </video>
                    </div>
                 </div>
               </Reveal>

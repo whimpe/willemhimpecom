@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Play, User, Linkedin, Instagram, Mail, Youtube } from 'lucide-react';
+import { Play, User, Linkedin, Instagram, Youtube } from 'lucide-react';
 import { Reveal } from './ui/Reveal';
 
 const TikTokIcon = ({ size = 20 }: { size?: number }) => (
@@ -48,13 +48,12 @@ export const Hero: React.FC = () => {
                 <SocialIcon href="https://x.com/willem_himpe" icon={
                   <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
                 } />
-                <SocialIcon href="mailto:willem@relivo.io" icon={<Mail size={22} />} />
               </div>
             </Reveal>
 
             <Reveal width="100%" direction="up" delay={0.2}>
               <h1 className="text-4xl md:text-8xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 pb-2 leading-[1.05] max-w-4xl mx-auto px-4">
-                I build companies with innovative products.
+                I Build. Sell. Scale.
               </h1>
             </Reveal>
 
